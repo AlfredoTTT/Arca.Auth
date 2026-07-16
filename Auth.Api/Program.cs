@@ -5,29 +5,24 @@ using Auth.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configuración de servicios
+// Configuración de servicios
 builder.Services.AddControllers();
 builder.Services.AddApplication().AddInfraestructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddJwtAuthentication(builder.Configuration);
-
-// 2. Configuración de logs nativa
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole(); // Vital para que Azure capture los logs
-
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddAzureWebAppDiagnostics();
 var app = builder.Build();
-
-// 3. Middlewares (EL ORDEN IMPORTA)
-// El middleware de excepciones debe ser el primero para capturar cualquier error posterior
 app.UseMiddleware<ExceptionHandlingMiddleware>();
- app.UseSwagger();
+app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// 4. Verificación de conexión segura después del inicio
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
