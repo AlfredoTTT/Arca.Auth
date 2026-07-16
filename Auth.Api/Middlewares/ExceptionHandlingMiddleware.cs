@@ -3,7 +3,7 @@ using System.Text.Json;
 using FluentValidation;
 using Auth.Domain.Exceptions;
 
-namespace Auth.Api.Middleware;
+namespace Auth.Api.Middlewares;
 
 public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
