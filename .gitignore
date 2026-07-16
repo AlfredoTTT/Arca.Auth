@@ -16,3 +16,6 @@ obj/
 *.suo
 *.userosscache
 *.sln.docstates
+
+# Migrations
+*Migrations/

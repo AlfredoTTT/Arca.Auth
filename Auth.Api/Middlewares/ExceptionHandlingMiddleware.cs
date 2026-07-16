@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using FluentValidation;
+using Auth.Domain.Exceptions;
 
 namespace Auth.Api.Middleware;
 
@@ -27,6 +28,8 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         var statusCode = exception switch
         {
             ValidationException => HttpStatusCode.BadRequest,
+            UserAlreadyExistsException => HttpStatusCode.Conflict, // 409 Conflict es el estándar para esto
+            InvalidCredentialsException => HttpStatusCode.Unauthorized, // 401 Unauthorized
             _ => HttpStatusCode.InternalServerError
         };
 
@@ -37,7 +40,12 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         {
             StatusCode = context.Response.StatusCode,
             Message = "Ocurrió un error en la solicitud",
-            Errors = exception is ValidationException valEx ? valEx.Errors.Select(e => e.ErrorMessage) : null
+            Errors = exception switch 
+            {
+                ValidationException valEx => valEx.Errors.Select(e => e.ErrorMessage),
+                DomainException domEx => new List<string> { domEx.Message }, // Captura tus excepciones de dominio
+                _ => ["Ocurrió un error inesperado"] // Oculta el mensaje real en errores 500
+            }
         };
 
         return context.Response.WriteAsync(JsonSerializer.Serialize(response));

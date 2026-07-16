@@ -19,4 +19,10 @@ public class User
         RoleId = roleId;
         IsActive = true;
     }
+    public void UpdatePassword(string newHash)
+    {
+        if (string.IsNullOrWhiteSpace(newHash))
+            throw new ArgumentException("El hash no puede estar vacío");
+        PasswordHash = newHash;
+    }
 }
