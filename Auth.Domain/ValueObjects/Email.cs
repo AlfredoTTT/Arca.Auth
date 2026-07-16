@@ -4,6 +4,7 @@ public record Email
 {
     public string Value { get; }
 
+
     public Email(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
