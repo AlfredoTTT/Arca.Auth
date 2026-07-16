@@ -21,13 +21,8 @@ var app = builder.Build();
 // 3. Middlewares (EL ORDEN IMPORTA)
 // El middleware de excepciones debe ser el primero para capturar cualquier error posterior
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+ app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
