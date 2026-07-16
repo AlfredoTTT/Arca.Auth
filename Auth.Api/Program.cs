@@ -8,6 +8,8 @@ builder.Services.AddApplication().AddInfraestructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
