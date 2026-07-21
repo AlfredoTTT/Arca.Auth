@@ -1,6 +1,6 @@
 using Auth.Domain.Entities;
 
-namespace Auth.Application.Interfaces.Repositories;
+namespace Auth.Domain.Interfaces.Repositories;
 
 public interface IRolePermissionRepository
 {

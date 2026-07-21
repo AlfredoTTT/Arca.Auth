@@ -1,9 +1,9 @@
 using MediatR;
-using Auth.Application.Interfaces.Repositories;
 using Auth.Domain.Exceptions;
 using Auth.Application.Interfaces.Security;
 using Auth.Application.Interfaces.Common;
 using Auth.Domain.ValueObjects;
+using Auth.Domain.Interfaces.Repositories;
 
 namespace Auth.Application.Features.Users.Commands;
 public class LoginUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenService tokenService): IRequestHandler<LoginUserCommand, string>

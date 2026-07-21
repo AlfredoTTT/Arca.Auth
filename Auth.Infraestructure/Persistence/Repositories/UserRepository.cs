@@ -1,4 +1,4 @@
-using Auth.Application.Interfaces.Repositories;
+using Auth.Domain.Interfaces.Repositories;
 using Auth.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Auth.Domain.ValueObjects;

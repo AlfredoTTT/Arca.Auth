@@ -3,7 +3,7 @@ using Auth.Domain.ValueObjects;
 using Auth.Domain.Exceptions;
 using Auth.Domain.Entities;
 using MediatR;
-using Auth.Application.Interfaces.Repositories;
+using Auth.Domain.Interfaces.Repositories;
 
 namespace Auth.Application.Features.Users.Commands;
 
@@ -16,7 +16,7 @@ public class RegisterUserCommandHandler(IPasswordHasher passwordHasher, IUserRep
     public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var email = new Email(request.Email);
-        var password = new Password(request.Password); // Lanza excepción si es inválido
+        var password = new Password(request.Password); 
             if (await _userRepository.GetByEmailAsync(email) != null)
                 throw new UserAlreadyExistsException(email.Value);
         var hash = _passwordHasher.Hash(password.Value);

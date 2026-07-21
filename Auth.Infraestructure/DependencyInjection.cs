@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Auth.Application.Interfaces.Security;
 using Auth.Application.Interfaces.Common;
-using Auth.Application.Interfaces.Repositories;
+using Auth.Domain.Interfaces.Repositories;
 using Auth.Infraestructure.Persistence.Repositories;
 using Auth.Infraestructure.Persistence;
 using Microsoft.EntityFrameworkCore;

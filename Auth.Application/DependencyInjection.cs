@@ -13,7 +13,7 @@ public static class DependencyInjection
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         //Registra FluentValidation: busca todos los AbstractValidator en este assembly
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        //Registra el comportamiento de validación en la tubería de MediatR
+        //Registra el comportamiento de validación en pipeline de MediatR
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Common.Behaviours.ValidationBehavior<,>));
 
         return services;

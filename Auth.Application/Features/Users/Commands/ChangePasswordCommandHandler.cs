@@ -1,7 +1,6 @@
-
-using Auth.Application.Interfaces.Repositories;
 using Auth.Application.Interfaces.Security;
 using Auth.Domain.Exceptions;
+using Auth.Domain.Interfaces.Repositories;
 using Auth.Domain.ValueObjects;
 using MediatR;
 

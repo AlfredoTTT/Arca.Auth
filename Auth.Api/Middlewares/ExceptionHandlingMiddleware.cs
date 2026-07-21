@@ -15,7 +15,6 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         }
         catch (Exception ex)
         {
-            // Aquí entra la telemetría: logueamos el error real
             logger.LogError(ex, "Ocurrió una excepción no controlada");
             await HandleExceptionAsync(context, ex);
         }
@@ -43,7 +42,8 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
             Errors = exception switch 
             {
                 ValidationException valEx => valEx.Errors.Select(e => e.ErrorMessage),
-                DomainException domEx => new List<string> { domEx.Message }, // Captura tus excepciones de dominio
+                DomainException domEx => [domEx.Message], // Captura tus excepciones de dominio
+                ArgumentException argEx => [argEx.Message],
                 _ => ["Ocurrió un error inesperado"] // Oculta el mensaje real en errores 500
             }
         };
