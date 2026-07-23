@@ -3,17 +3,22 @@ using Auth.Domain.ValueObjects;
 using Auth.Domain.Exceptions;
 using Auth.Domain.Entities;
 using MediatR;
+using Auth.Contracts.Events;
 using Auth.Domain.Interfaces.Repositories;
+using MassTransit;
+using Auth.Application.Interfaces.Common;
 
 namespace Auth.Application.Features.Users.Commands;
 
-public class RegisterUserCommandHandler(IPasswordHasher passwordHasher, IUserRepository userRepository) : IRequestHandler<RegisterUserCommand>
+public class RegisterUserCommandHandler(IPasswordHasher passwordHasher, IUserRepository userRepository, IPublishEndpoint publishEndpoint, IUnitOfWork unitOfWork) : IRequestHandler<RegisterUserCommand>
 {
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IUserRepository _userRepository = userRepository;
+    private readonly IPublishEndpoint _publishEndpoint = publishEndpoint;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
 
-    public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var email = new Email(request.Email);
         var password = new Password(request.Password); 
@@ -21,8 +26,13 @@ public class RegisterUserCommandHandler(IPasswordHasher passwordHasher, IUserRep
                 throw new UserAlreadyExistsException(email.Value);
         var hash = _passwordHasher.Hash(password.Value);
         var user = new User(email, hash, request.RoleId);
-        await _userRepository.AddAsync(user);
-        return Unit.Value;
+        await _userRepository.AddAsync(user, cancellationToken);
+        await _publishEndpoint.Publish(new UserRegistrationInitiatedEvent(
+            user.Id,
+            user.Email.Value,
+            DateTime.UtcNow
+        ), cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     Task IRequestHandler<RegisterUserCommand>.Handle(RegisterUserCommand request, CancellationToken cancellationToken)

@@ -7,21 +7,20 @@ namespace Auth.Infraestructure.Persistence.Repositories;
 
 public class UserRepository(AppDbContext context) : IUserRepository
 {
-    public async Task<User?> GetByIdAsync(Guid id) =>
-        await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        await context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken: cancellationToken);
 
-    public async Task<User?> GetByEmailAsync(Email email) =>
-        await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    public async Task<User?> GetByEmailAsync(Email email,CancellationToken cancellationToken = default) =>
+        await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken: cancellationToken);
 
-    public async Task AddAsync(User user)
+    public async Task AddAsync(User user, CancellationToken cancellationToken = default)
     {
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        await context.Users.AddAsync(user, cancellationToken);
     }
 
-    public async Task UpdateAsync(User user)
+    public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
     {
         context.Users.Update(user);
-        await context.SaveChangesAsync();
+        await  Task.CompletedTask;
     }
 }

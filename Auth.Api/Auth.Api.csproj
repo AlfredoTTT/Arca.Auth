@@ -7,6 +7,7 @@
     <UserSecretsId>24d361c3-83bc-429c-84eb-a0dcaeaaf234</UserSecretsId>
   </PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="9.1.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="10.0.10" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />

@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="Auth.Api/Auth.Api.csproj" />
   <Project Path="Auth.Application/Auth.Application.csproj" />
+  <Project Path="Auth.Contracts/Auth.Contracts.csproj" Id="8de0b2bd-b18e-4c21-b2df-f64664315a5c" />
   <Project Path="Auth.Domain/Auth.Domain.csproj" />
   <Project Path="Auth.Infraestructure/Auth.Infraestructure.csproj" />
 </Solution>
